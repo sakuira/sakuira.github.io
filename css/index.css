@@ -3382,7 +3382,7 @@ blockquote footer cite:before {
 #page-header {
   position: relative;
   width: 100%;
-  background-color: #49b1f5;
+  background-color: var(--card-bg);
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -3463,7 +3463,7 @@ blockquote footer cite:before {
 }
 @media screen and (max-width: 768px) {
   #page-header.not-home-page {
-    height: 14rem;
+    height: 14rem !important;
   }
 }
 #page-header #page-site-info {
@@ -3474,7 +3474,7 @@ blockquote footer cite:before {
 }
 @media screen and (max-width: 768px) {
   #page-header #page-site-info {
-    top: 7rem;
+    top: 7rem !important;
   }
 }
 #page-header.post-bg {
@@ -3512,6 +3512,19 @@ blockquote footer cite:before {
   #page-header #post-info {
     bottom: 1.1rem;
     padding: 0 1.1rem;
+  }
+}
+#page-header.has-video {
+  position: relative;
+  height: 80vh !important;
+}
+#page-header.has-video #page-site-info {
+  z-index: 2;
+  top: 15rem;
+}
+@media screen and (max-width: 768px) {
+  #page-header.has-video {
+    height: 14rem !important;
   }
 }
 #page-header.not-top-img {

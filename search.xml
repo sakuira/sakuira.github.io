@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Vue3</title>
+      <link href="/post/3a42db2d.html"/>
+      <url>/post/3a42db2d.html</url>
+      
+        <content type="html"><![CDATA[<p>之前写了一篇关于 Vue2 的后台管理系统模板的推荐，详情请见 Vue后台管理系统模板推荐。</p><p>Vue3 在今年2月份已成为新的默认版本，本文收集了一些 Vue3 的后台管理系统模板，分享给在座的仌（打工人乃人上人👣）。</p><p>还是老规矩，按照 Github 星标数量来依次介绍。</p><p>个人较推荐 vue-vben-admin、vue-pure-admin、naive-ui-admin、vue3-composition-admin、vue-next-admin。意见仅供参考，具体可根据团队审美，业务需求选择一款更契合的后台管理系统模板。</p><p>gin-vue-admin (14.2k)<br>如果后台选择的是go语言，可以考虑这一款。</p><p>gin-vue-admin（github上的标星数为14.2k）基于 vite + vue3 + gin 搭建的开发基础平台（支持TS，JS 混用），集成 jwt鉴权，权限管理，动态路由，显隐可控组件，分页封装，多点登录拦截，资源权限，上传下载，代码生成器，表单生成器等开发必备功能。</p><p>相关地址<br>文档地址：gin-vue-admin Documentation<br>仓库地址：<a href="https://github.com/flipped-aurora/gin-vue-admin">https://github.com/flipped-aurora/gin-vue-admin</a><br>预览地址：<a href="http://demo.gin-vue-admin.com/">http://demo.gin-vue-admin.com</a><br>技术选型<br>前端：用基于 Vue 的 Element 构建基础页面。<br>后端：用 Gin 快速搭建基础 restful风格API，Gin 是一个go语言编写的Web框架。<br>数据库：采用MySql&gt;5.7版本，数据库引擎 innoDB，使用 gorm 实现对数据库的基本操作，已添加对sqlite数据库的支持。<br>缓存：使用Redis实现记录当前活跃用户的jwt令牌并实现多点登录限制。<br>API文档：使用Swagger构建自动化文档。<br>配置文件：使用 fsnotify 和 viper 实现yaml格式的配置文件。<br>日志：使用 zap 实现日志记录。<br>主要功能<br>权限管理：基于jwt和casbin实现的权限管理<br>用户管理：系统管理员分配用户角色和角色权限。<br>角色管理：创建权限控制的主要对象，可以给角色分配不同api权限和菜单权限。<br>菜单管理：实现用户动态菜单配置，实现不同角色不同菜单。<br>api管理：不同用户可调用的api接口的权限不同。<br>富文本编辑器：MarkDown编辑器功能嵌入。<br>restful示例：可以参考用户管理模块中的示例API。<br>多点登录限制：需要在config.yaml中把system中的useMultipoint修改为true(需要自行配置Redis和Config中的Redis参数，测试阶段，有bug请及时反馈)。<br>表单生成器：表单生成器借助 @form-generator。<br>代码生成器：后台基础逻辑以及简单curd的代码生成器等。<br>预览效果</p><p>vue-vben-admin (13.5k)<br>Vue-Vben-Admin（github上的标星数为13.5k）是一个基于 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 的后台解决方案，目标是为开发中大型项目提供开箱即用的解决方案。包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。项目使用前端较新的技术栈，可以作为项目的启动模版，以帮助你快速搭建企业级中后台产品原型。</p><p>相关地址<br>文档地址：Vben Admin Documentation<br>仓库地址：完整版、简化版<br>预览地址：完整版、简化版<br>特点<br>最新技术栈：使用 Vue3&#x2F;vite2 等前端前沿技术开发<br>TypeScript: 应用程序级 JavaScript 的语言<br>主题：可配置的主题<br>国际化：内置完善的国际化方案<br>Mock 数据 内置 Mock 数据方案<br>权限 内置完善的动态路由权限生成方案<br>组件 二次封装了多个常用的组件<br>预览效果</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前段Vue </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Vue3 </tag>
+            
+            <tag> Vue </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/post/16107.html"/>
       <url>/post/16107.html</url>
