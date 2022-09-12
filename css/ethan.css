@@ -722,12 +722,12 @@ body,
 /* 搜索添加动画 及icon颜色 */
 
 
-/* @media screen and (min-width: 768px) {
+ @media screen and (min-width: 768px) {
     #search-button .search .fa-search {
         -webkit-animation: float 2s linear infinite;
         animation: float 2s linear infinite
     }
-} */
+} 
 
 [data-theme='dark'] .recent-posts .recent-post-item .recent-post-info .content {
     color: rgba(255, 255, 255, 0.8) !important
