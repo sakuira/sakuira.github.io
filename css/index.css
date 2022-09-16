@@ -2680,6 +2680,44 @@ blockquote footer cite:before {
   -webkit-box-shadow: var(--card-hover-box-shadow);
   box-shadow: var(--card-hover-box-shadow);
 }
+#aside-content .card-widget.card-info {
+  background-image: url("https://s2.loli.net/2022/09/16/nCFzEhMYOIuWsV6.png");
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: 100%;
+}
+#aside-content .card-widget.card-info .avatar-img {
+  margin-top: 20px;
+}
+#aside-content .card-widget.card-info .avatar-img img {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}
+#aside-content .card-widget.card-info .avatar-img img:hover {
+  -webkit-transform: unset;
+  -moz-transform: unset;
+  -o-transform: unset;
+  -ms-transform: unset;
+  transform: unset;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+#aside-content .card-widget.card-info .avatar-img:hover + .author-info__name {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+#aside-content .card-widget.card-info .author-info__name {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}
 #aside-content .card-info img {
   width: 110px;
   height: 110px;
@@ -2691,11 +2729,14 @@ blockquote footer cite:before {
   transition: all 0.5s;
 }
 #aside-content .card-info img:hover {
-  -webkit-transform: rotate(360deg);
-  -moz-transform: rotate(360deg);
-  -o-transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
-  transform: rotate(360deg);
+  -webkit-transform: unset;
+  -moz-transform: unset;
+  -o-transform: unset;
+  -ms-transform: unset;
+  transform: unset;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 #aside-content .card-info .author-info__name {
   font-weight: 500;
@@ -3856,6 +3897,9 @@ _:future,
   width: 50%;
   height: 100%;
   background-color: var(--preloader-bg);
+}
+#loading-box .loading-left-bg {
+  left: 0 /* 原代码中可能没有这项 */;
 }
 #loading-box .loading-right-bg {
   right: 0;
