@@ -1433,14 +1433,17 @@ hr:before {
     border: none
 }
 
-#article-container figure.highlight .gutter pre {
+/* #article-container figure.highlight .gutter pre {
     padding-right: .5rem;
     padding-left: .5rem;
     background-color: #212121;
     color: rgba(238, 255, 255, .5);
     text-align: right
-}
+} */
 
+#article-container figure.highlight .gutter {
+    display: none;
+}
 #article-container figure.highlight .code pre {
     padding-right: .5rem;
     padding-left: .5rem;
@@ -1639,12 +1642,12 @@ blockquote footer cite:before {
     color: #6f42c1
 }
 
-#article-container .gutter {
+/* #article-container .gutter {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none
-}
+} */
 
 #article-container .gist table {
     width: auto
