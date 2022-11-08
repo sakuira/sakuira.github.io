@@ -300,7 +300,7 @@ body::-webkit-scrollbar {
 
 /* 手机侧边栏默认不展开 */
 var mobile_sidebar_menus = document.getElementById("sidebar-menus");
-if (mobile_sidebar_menus) {
+if  (mobile_sidebar_menus) {
     var menus_item_child = mobile_sidebar_menus.getElementsByClassName(
         "menus_item_child"
     );
