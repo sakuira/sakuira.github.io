@@ -1,0 +1,476 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kafka-python | 百变の小莹</title><meta name="keywords" content="Python,Kafka,消息队列"><meta name="author" content="Ying ying"><meta name="copyright" content="Ying ying"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="最近学了Kafka在Python中的使用,记一下笔记吧! Kafka-python API帮助文档   生产者 KafkaProducer是发布消息到Kafka集群的客户端，它是线程安全的并且共享单一生产者实例。生产者包含一个带有缓冲区的池，用于保存还没有传送到Kafka集群的消息记录以及一个后台IO线程，该线程将这些留在缓冲区的消息记录发送到Kafka集群中。  ​	要往Kafka写入消息，首先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka-python">
+<meta property="og:url" content="https://yinging.com/post/e8c1645.html">
+<meta property="og:site_name" content="百变の小莹">
+<meta property="og:description" content="最近学了Kafka在Python中的使用,记一下笔记吧! Kafka-python API帮助文档   生产者 KafkaProducer是发布消息到Kafka集群的客户端，它是线程安全的并且共享单一生产者实例。生产者包含一个带有缓冲区的池，用于保存还没有传送到Kafka集群的消息记录以及一个后台IO线程，该线程将这些留在缓冲区的消息记录发送到Kafka集群中。  ​	要往Kafka写入消息，首先">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg">
+<meta property="article:published_time" content="2022-09-30T06:18:47.000Z">
+<meta property="article:modified_time" content="2022-09-30T07:37:00.981Z">
+<meta property="article:author" content="Ying ying">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/09/26/iqTRZU6hHV82WKz.png"><link rel="canonical" href="https://yinging.com/post/e8c1645"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WHM432AVJS","apiKey":"b68033fcfc25be92d9d0242ca997feb9","indexName":"indices","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Ying ying","link":"链接: ","source":"来源: 百变の小莹","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2022-09-30 15:37:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/carousel-touch.min.js"></script><link rel="stylesheet" href="/css/rightMenu.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/l-lin/font-awesome-animation/dist/font-awesome-animation.min.css"  media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/css/ethan.css"><link rel="stylesheet" href="https://npm.elemecdn.com/tzy-blog/lib/css/loading_wizard.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://s2.loli.net/2022/09/15/ywi7QsVEY9FPaHM.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home faa-float animated"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-sun faa-float animated"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive faa-float animated"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags faa-float animated"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open faa-float animated"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-float animated"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music faa-float animated"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-camera-retro faa-float animated"></i><span> 相册</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fab fa-youtube faa-float animated"></i><span> 番剧</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video faa-float animated"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments faa-float animated"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link faa-float animated"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart card-announcement-animation faa-float animated"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">百变の小莹</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home faa-float animated"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-sun faa-float animated"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive faa-float animated"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags faa-float animated"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open faa-float animated"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-float animated"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music faa-float animated"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-camera-retro faa-float animated"></i><span> 相册</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fab fa-youtube faa-float animated"></i><span> 番剧</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video faa-float animated"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments faa-float animated"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link faa-float animated"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart card-announcement-animation faa-float animated"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Kafka-python</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-30T06:18:47.000Z" title="发表于 2022-09-30 14:18:47">2022-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-30T07:37:00.981Z" title="更新于 2022-09-30 15:37:00">2022-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/MQ/">MQ</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka-python"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近学了Kafka在Python中的使用,记一下笔记吧!</p>
+<div class="note blue icon simple"><i class="note-icon fas fa-bullhorn"></i><p><a target="_blank" rel="noopener" href="https://kafka-python.readthedocs.io/en/master/apidoc/modules.html">Kafka-python API帮助文档</a></p>
+</div>
+
+<h1 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h1><pre><code> KafkaProducer是发布消息到Kafka集群的客户端，它是线程安全的并且共享单一生产者实例。生产者包含一个带有缓冲区的池，用于保存还没有传送到Kafka集群的消息记录以及一个后台IO线程，该线程将这些留在缓冲区的消息记录发送到Kafka集群中。
+</code></pre>
+<p>​	要往Kafka写入消息，首先要创建一个生产者对象，并设置一些属性。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"><span class="keyword">from</span> kafka.errors <span class="keyword">import</span> KafkaError, KafkaTimeoutError</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">KafkaProducer构造函数部分参数解释</span></span><br><span class="line"><span class="string">    - acks 0表示发送不理睬发送是否成功；1表示需要等待leader成功写入日志才返回；all表示所有副本都写入日志才返回</span></span><br><span class="line"><span class="string">    - buffer_memory 默认33554432也就是32M，该参数用于设置producer用于缓存消息的缓冲区大小，如果采用异步发送消息，那么</span></span><br><span class="line"><span class="string">                    生产者启动后会创建一个内存缓冲区用于存放待发送的消息，然后由专属线程来把放在缓冲区的消息进行真正发送，</span></span><br><span class="line"><span class="string">                    如果要给生产者要给很多分区发消息那么就需要考虑这个参数的大小防止过小降低吞吐量</span></span><br><span class="line"><span class="string">    - compression_type 是否启用压缩，默认是none，可选类型为gzip、lz4、snappy三种。压缩会降低网络IO但是会增加生产者端的CPU</span></span><br><span class="line"><span class="string">                       消耗。另外如果broker端的压缩设置和生产者不同那么也会给broker带来重新解压缩和重新压缩的CPU负担。</span></span><br><span class="line"><span class="string">    - retries 重试次数，当消息发送失败后会尝试几次重发。默认为0，一般考虑到网络抖动或者分区的leader切换，而不是服务端</span></span><br><span class="line"><span class="string">              真的故障所以可以设置重试3次。</span></span><br><span class="line"><span class="string">    - retry_backoff_ms 每次重试间隔多少毫秒，默认100毫秒。</span></span><br><span class="line"><span class="string">    - max_in_flight_requests_per_connection 生产者会将多个发送请求缓存在内存中，默认是5个，如果你开启了重试，也就是设置了</span></span><br><span class="line"><span class="string">                                            retries参数，那么将可能导致针对于同一分区的消息出现顺序错乱。为了防止这种情况</span></span><br><span class="line"><span class="string">                                            需要把该参数设置为1，来保障同分区的消息顺序。</span></span><br><span class="line"><span class="string">    - batch_size 对于调优生产者吞吐量和延迟性能指标有重要的作用。buffer_memeory可以看做池子，而这个batch_size可以看做池子里</span></span><br><span class="line"><span class="string">                 装有消息的小盒子。这个值默认16384也就是16K，其实不大。生产者会把发往同一个分区的消息放在一个batch中，当batch</span></span><br><span class="line"><span class="string">                 满了就会发送里面的消息，但是也不一定非要等到满了才会发。这个数值大那么生产者吞吐量高但是性能低因为盒子太大占用内存</span></span><br><span class="line"><span class="string">                 发送的时候这个数据量也就大。如果你设置成1M，那么显然生产者的吞吐量要比16K高的多。</span></span><br><span class="line"><span class="string">    - linger_ms 上面说batch没有填满也可以发送，那显然有一个时间控制，就是这个参数，默认是0毫秒，这个参数就是用于控制消息发送延迟</span></span><br><span class="line"><span class="string">                多久的。默认是立即发送，无需关系batch是否填满。大多数场景我们希望立即发送，但是这也降低了吞吐量。</span></span><br><span class="line"><span class="string">    - max_request_size 最大请求大小，可以理解为一条消息记录的最大大小，默认是1048576字节。</span></span><br><span class="line"><span class="string">    - request_timeout_ms  生产者发送消息后，broker需要在规定时间内将处理结果返回给生产者，那个这个时间长度就是这个参数</span></span><br><span class="line"><span class="string">                          控制的，默认30000，也就是30秒。如果broker在30秒内没有给生产者响应，那么生产者就会认为请求超时，并在回调函数</span></span><br><span class="line"><span class="string">                          中进行特殊处理，或者进行重试。</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Producer</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, KafkaServerList=[<span class="string">&#x27;127.0.0.1:9092&#x27;</span>], ClientId=<span class="string">&quot;Procucer01&quot;</span>, Topic=<span class="string">&#x27;Test&#x27;</span></span>):</span><br><span class="line">        self._kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;bootstrap_servers&quot;</span>: KafkaServerList,</span><br><span class="line">            <span class="string">&quot;client_id&quot;</span>: ClientId,</span><br><span class="line">            <span class="string">&quot;acks&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&quot;buffer_memory&quot;</span>: <span class="number">33554432</span>,</span><br><span class="line">            <span class="string">&#x27;compression_type&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">            <span class="string">&quot;retries&quot;</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="string">&quot;batch_size&quot;</span>: <span class="number">1048576</span>,</span><br><span class="line">            <span class="string">&quot;linger_ms&quot;</span>: <span class="number">100</span>,</span><br><span class="line">            <span class="string">&quot;key_serializer&quot;</span>: <span class="keyword">lambda</span> m:json.dumps(m).encode(<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">            <span class="string">&quot;value_serializer&quot;</span>: <span class="keyword">lambda</span> m: json.dumps(m).encode(<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">        &#125;</span><br><span class="line">        self._topic = Topic</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self._producer = KafkaProducer(**self._kwargs)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_onSendSucess</span>(<span class="params">self, record_metadata</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        异步发送成功回调函数，也就是真正发送到kafka集群且成功才会执行。发送到缓冲区不会执行回调方法。</span></span><br><span class="line"><span class="string">        :param record_metadata:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;发送成功&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;被发往的主题：&quot;</span>, record_metadata.topic)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;被发往的分区：&quot;</span>, record_metadata.partition)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;队列位置：&quot;</span>, record_metadata.offset)  <span class="comment"># 这个偏移量是相对偏移量，也就是相对起止位置，也就是队列偏移量。</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_onSendFailed</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;发送失败&quot;</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sendMessage</span>(<span class="params">self, value=<span class="literal">None</span>, partition=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> value:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 发送的消息必须是序列化后的，或者是字节</span></span><br><span class="line">        <span class="comment"># message = json.dumps(msg, encoding=&#x27;utf-8&#x27;, ensure_ascii=False)</span></span><br><span class="line"> </span><br><span class="line">        kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;value&quot;</span>: value, <span class="comment"># value 必须必须为字节或者被序列化为字节，由于之前我们初始化时已经通过value_serializer来做了，所以我上面的语句就注释了</span></span><br><span class="line">            <span class="string">&quot;key&quot;</span>: <span class="literal">None</span>,  <span class="comment"># 与value对应的键，可选，也就是把一个键关联到这个消息上，KEY相同就会把消息发送到同一分区上，所以如果有这个要求就可以设置KEY，也需要序列化</span></span><br><span class="line">            <span class="string">&quot;partition&quot;</span>: partition <span class="comment"># 发送到哪个分区，整型。如果不指定将会自动分配。</span></span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 异步发送，发送到缓冲区，同时注册两个回调函数，一个是发送成功的回调，一个是发送失败的回调。</span></span><br><span class="line">            <span class="comment"># send函数是有返回值的是RecordMetadata，也就是记录的元数据，包括主题、分区、偏移量</span></span><br><span class="line">            future = self._producer.send(self._topic, **kwargs).add_callback(self._onSendSucess).add_errback(self._onSendFailed)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;发送消息:&quot;</span>, value)</span><br><span class="line">            <span class="comment"># 注册回调也可以这样写，上面的写法就是为了简化</span></span><br><span class="line">            <span class="comment"># future.add_callback(self._onSendSucess)</span></span><br><span class="line">            <span class="comment"># future.add_errback(self._onSendFailed)</span></span><br><span class="line">        <span class="keyword">except</span> KafkaTimeoutError <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">closeConnection</span>(<span class="params">self, timeout=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 关闭生产者，可以指定超时时间，也就是等待关闭成功最多等待多久。</span></span><br><span class="line">        self._producer.close(timeout=timeout)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sendNow</span>(<span class="params">self, timeout=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 调用flush()函数可以放所有在缓冲区的消息记录立即发送，即使ligner_ms值大于0.</span></span><br><span class="line">        <span class="comment"># 这时候后台发送消息线程就会开始立即发送消息并且阻塞在这里，等待消息发送成功，当然是否阻塞取决于acks的值。</span></span><br><span class="line">        <span class="comment"># 如果不调用flush函数，那么什么时候发送消息取决于ligner_ms或者batch任意一个条件满足就会发送。</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self._producer.flush(timeout=timeout)</span><br><span class="line">        <span class="keyword">except</span> KafkaTimeoutError <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    p = Producer(KafkaServerList=[<span class="string">&quot;172.16.42.156:9092&quot;</span>], ClientId=<span class="string">&quot;Procucer01&quot;</span>, Topic=<span class="string">&quot;TESTTOPIC&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        closePrice = random.randint(<span class="number">1</span>, <span class="number">500</span>)</span><br><span class="line">        msg = &#123;</span><br><span class="line">            <span class="string">&quot;Publisher&quot;</span>: <span class="string">&quot;Procucer01&quot;</span>,</span><br><span class="line">            <span class="string">&quot;股票代码&quot;</span>: <span class="number">60000</span> + i,</span><br><span class="line">            <span class="string">&quot;昨日收盘价&quot;</span>: closePrice,</span><br><span class="line">            <span class="string">&quot;今日开盘价&quot;</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">&quot;今日收盘价&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        p.sendMessage(value=msg)</span><br><span class="line">    <span class="comment"># p.sendNow()</span></span><br><span class="line">    p.closeConnection()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        main()</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        sys.exit()</span><br></pre></td></tr></table></figure>
+
+<p> python 发送kafka大体有三种方式 ,上面介绍的add_callback和add_errback是异步发送,最常用的一种发送方式了吧,另外还有两种方法,记一下吧.</p>
+<div class="tabs" id="test1"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#test1-1">发送并忘记</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="test1-1"><p>1 发送并忘记（不关注是否正常到达，不对返回结果做处理）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&#x27;ip:9092&#x27;</span>],</span><br><span class="line">                          key_serializer=<span class="keyword">lambda</span> k: pickle.dumps(k),</span><br><span class="line">                          value_serializer=<span class="keyword">lambda</span> v: pickle.dumps(v))</span><br><span class="line"></span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">10000</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;------&#123;&#125;---------&#x27;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">    <span class="comment"># 就是这里</span></span><br><span class="line">    future = producer.send(<span class="string">&#x27;test_topic&#x27;</span>, key=<span class="string">&#x27;num&#x27;</span>, value=i, partition=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将缓冲区的全部消息push到broker当中</span></span><br><span class="line">producer.flush()</span><br><span class="line">producer.close()</span><br><span class="line"></span><br><span class="line">end_time = time.time()</span><br><span class="line">time_counts = end_time - start_time  <span class="comment"># 顺便统计一下时间</span></span><br><span class="line"><span class="built_in">print</span>(time_counts)</span><br></pre></td></tr></table></figure>
+
+<!-- endtab 同步发送 -->
+
+<!-- tab -->
+<p> 2 同步发送(通过get方法等待Kafka的响应，判断消息是否发送成功) </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&#x27;ip:9092&#x27;</span>],</span><br><span class="line">                          key_serializer=<span class="keyword">lambda</span> k: pickle.dumps(k),</span><br><span class="line">                          value_serializer=<span class="keyword">lambda</span> v: pickle.dumps(v))</span><br><span class="line"></span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">10000</span>):</span><br><span class="line">     <span class="built_in">print</span>(<span class="string">&#x27;------&#123;&#125;---------&#x27;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">     future = producer.send(topic=<span class="string">&quot;test_topic&quot;</span>, key=<span class="string">&quot;num&quot;</span>, value=i)</span><br><span class="line">     <span class="comment"># 同步阻塞,通过调用get()方法进而保证一定程序是有序的.</span></span><br><span class="line">     <span class="keyword">try</span>:</span><br><span class="line">         record_metadata = future.get(timeout=<span class="number">10</span>)</span><br><span class="line">         <span class="comment"># print(record_metadata.topic)</span></span><br><span class="line">         <span class="comment"># print(record_metadata.partition)</span></span><br><span class="line">         <span class="comment"># print(record_metadata.offset)</span></span><br><span class="line">     <span class="keyword">except</span> kafka_errors <span class="keyword">as</span> e:</span><br><span class="line">         <span class="built_in">print</span>(<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将缓冲区的全部消息push到broker当中</span></span><br><span class="line">producer.flush()</span><br><span class="line">producer.close()</span><br><span class="line"></span><br><span class="line">end_time = time.time()</span><br><span class="line">time_counts = end_time - start_time  <span class="comment"># 顺便统计一下时间</span></span><br><span class="line"><span class="built_in">print</span>(time_counts)</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+
+
+<h1 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h1><ol>
+<li><p>手动拉取消息</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Consumer</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, KafkaServerList=[<span class="string">&#x27;172.16.48.171:9092&#x27;</span>], GroupID=<span class="string">&#x27;TestGroup&#x27;</span>, ClientId=<span class="string">&quot;Test&quot;</span>, Topics=[<span class="string">&#x27;Test&#x27;</span>,]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        用于设置消费者配置信息，这些配置项可以从源码中找到，下面为必要参数。</span></span><br><span class="line"><span class="string">        :param KafkaServerList: kafka服务器IP:PORT 列表</span></span><br><span class="line"><span class="string">        :param GroupID: 消费者组ID</span></span><br><span class="line"><span class="string">        :param ClientId: 消费者名称</span></span><br><span class="line"><span class="string">        :param Topic: 主题</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        初始化一个消费者实例，消费者不是线程安全的，所以建议一个线程实现一个消费者，而不是一个消费者让多个线程共享</span></span><br><span class="line"><span class="string">        下面这些是可选参数，可以在初始化KafkaConsumer实例的时候传递进去</span></span><br><span class="line"><span class="string">        enable_auto_commit 是否自动提交，默认是true</span></span><br><span class="line"><span class="string">        auto_commit_interval_ms 自动提交间隔毫秒数</span></span><br><span class="line"><span class="string">        auto_offset_reset=&quot;earliest&quot;  重置偏移量，earliest移到最早的可用消息，latest最新的消息，默认为latest</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self._kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;bootstrap_servers&quot;</span>: KafkaServerList,</span><br><span class="line">            <span class="string">&quot;client_id&quot;</span>: ClientId,</span><br><span class="line">            <span class="string">&quot;group_id&quot;</span>: GroupID,</span><br><span class="line">            <span class="string">&quot;enable_auto_commit&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">            <span class="string">&quot;auto_offset_reset&quot;</span>: <span class="string">&quot;latest&quot;</span>,</span><br><span class="line">            <span class="string">&quot;key_deserializer&quot;</span>: <span class="keyword">lambda</span> m: json.loads(m.decode(<span class="string">&#x27;utf-8&#x27;</span>)),</span><br><span class="line">            <span class="string">&quot;value_deserializer&quot;</span>: <span class="keyword">lambda</span> m: json.loads(m.decode(<span class="string">&#x27;utf-8&#x27;</span>)),</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self._consumer = KafkaConsumer(**self._kwargs)</span><br><span class="line">            self._consumer.subscribe(topics=(Topics))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Consumer init failed, %s&quot;</span> % err)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">consumeMsg</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                data = self._consumer.poll(timeout_ms=<span class="number">5</span>, max_records=<span class="number">100</span>)  <span class="comment"># 拉取消息，字典类型</span></span><br><span class="line">                <span class="keyword">if</span> data:</span><br><span class="line">                    <span class="keyword">for</span> key <span class="keyword">in</span> data:</span><br><span class="line">                        consumerrecord = data.get(key)[<span class="number">0</span>]   <span class="comment"># 返回的是ConsumerRecord对象，可以通过字典的形式获取内容。</span></span><br><span class="line">                        <span class="keyword">if</span> consumerrecord != <span class="literal">None</span>:</span><br><span class="line">                            <span class="comment"># 消息消费逻辑</span></span><br><span class="line">                            message = &#123;</span><br><span class="line">                                <span class="string">&quot;Topic&quot;</span>: consumerrecord.topic,</span><br><span class="line">                                <span class="string">&quot;Partition&quot;</span>: consumerrecord.partition,</span><br><span class="line">                                <span class="string">&quot;Offset&quot;</span>: consumerrecord.offset,</span><br><span class="line">                                <span class="string">&quot;Key&quot;</span>: consumerrecord.key,</span><br><span class="line">                                <span class="string">&quot;Value&quot;</span>: consumerrecord.value</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="built_in">print</span>(message)</span><br><span class="line">                            <span class="comment"># 消费逻辑执行完毕后在提交偏移量</span></span><br><span class="line">                            self._consumer.commit()</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            <span class="built_in">print</span>(<span class="string">&quot;%s consumerrecord is None.&quot;</span> % key)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        c = Consumer(KafkaServerList=[<span class="string">&#x27;192.168.51.193:9092&#x27;</span>], Topics=[<span class="string">&#x27;EEE888&#x27;</span>])</span><br><span class="line">        c.consumeMsg()</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        main()</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        sys.exit()</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>非手动拉取消息 </p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Consumer</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, KafkaServerList=[<span class="string">&#x27;172.16.48.171:9092&#x27;</span>], GroupID=<span class="string">&#x27;TestGroup&#x27;</span>, ClientId=<span class="string">&quot;Test&quot;</span>, Topics=[<span class="string">&#x27;Test&#x27;</span>,]</span>):</span><br><span class="line">        self._kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;bootstrap_servers&quot;</span>: KafkaServerList,</span><br><span class="line">            <span class="string">&quot;client_id&quot;</span>: ClientId,</span><br><span class="line">            <span class="string">&quot;group_id&quot;</span>: GroupID,</span><br><span class="line">            <span class="string">&quot;enable_auto_commit&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">            <span class="string">&quot;auto_offset_reset&quot;</span>: <span class="string">&quot;latest&quot;</span>,</span><br><span class="line">            <span class="string">&quot;key_deserializer&quot;</span>: <span class="keyword">lambda</span> m: json.loads(m.decode(<span class="string">&#x27;utf-8&#x27;</span>)),</span><br><span class="line">            <span class="string">&quot;value_deserializer&quot;</span>: <span class="keyword">lambda</span> m: json.loads(m.decode(<span class="string">&#x27;utf-8&#x27;</span>)),</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self._consumer = KafkaConsumer(**self._kwargs)</span><br><span class="line">            self._consumer.subscribe(topics=(Topics))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Consumer init failed, %s&quot;</span> % err)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">consumeMsg</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                <span class="keyword">for</span> consumerrecord <span class="keyword">in</span> self._consumer:</span><br><span class="line">                    <span class="keyword">if</span> consumerrecord:</span><br><span class="line">                        message = &#123;</span><br><span class="line">                                <span class="string">&quot;Topic&quot;</span>: consumerrecord.topic,</span><br><span class="line">                                <span class="string">&quot;Partition&quot;</span>: consumerrecord.partition,</span><br><span class="line">                                <span class="string">&quot;Offset&quot;</span>: consumerrecord.offset,</span><br><span class="line">                                <span class="string">&quot;Key&quot;</span>: consumerrecord.key,</span><br><span class="line">                                <span class="string">&quot;Value&quot;</span>: consumerrecord.value</span><br><span class="line">                                    &#125;</span><br><span class="line">                        <span class="built_in">print</span>(message)</span><br><span class="line">                        self._consumer.commit()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        c = Consumer(KafkaServerList=[<span class="string">&#x27;192.168.51.193:9092&#x27;</span>], Topics=[<span class="string">&#x27;EEE888&#x27;</span>])</span><br><span class="line">        c.consumeMsg()</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(err)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        main()</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        sys.exit()</span><br></pre></td></tr></table></figure></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ying ying</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://yinging.com/post/e8c1645.html">https://yinging.com/post/e8c1645.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yinging.com" target="_blank">百变の小莹</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Kafka/">Kafka</a><a class="post-meta__tags" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></div><div class="post_share"><div class="social-share" data-image="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s2.loli.net/2022/09/12/chBkNDo4miMX6jz.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://s2.loli.net/2022/09/12/chBkNDo4miMX6jz.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s2.loli.net/2022/09/12/Efo639O5XwUMcvG.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://s2.loli.net/2022/09/12/Efo639O5XwUMcvG.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/9daba997.html"><img class="prev-cover" data-lazy-src="http://p0.qhimg.com/bdr/__85/t016eb5915bd9b4618e.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">测试</div></div></a></div><div class="next-post pull-right"><a href="/post/e5b7246f.html"><img class="next-cover" data-lazy-src="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Kafka-python-api</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/e5b7246f.html" title="Kafka-python-api"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-30</div><div class="title">Kafka-python-api</div></div></a></div><div><a href="/post/7c613e7d.html" title="元类"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/05/26/628e6ab643d37.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">元类</div></div></a></div><div><a href="/post/9daba997.html" title="测试"><img class="cover" data-lazy-src="http://p0.qhimg.com/bdr/__85/t016eb5915bd9b4618e.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-22</div><div class="title">测试</div></div></a></div><div><a href="/post/4e9b1069.html" title="可变与不可变类型"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/06/05/629c65942cd1c.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">可变与不可变类型</div></div></a></div><div><a href="/post/2178aef8.html" title="生成器"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/05/26/628fa0426213d.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">生成器</div></div></a></div><div><a href="/post/da520e93.html" title="装饰器"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/07/24/62dd5bd9199a7.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">装饰器</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://s2.loli.net/2022/09/15/ywi7QsVEY9FPaHM.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ying ying</div><div class="author-info__description">2022年的理想你实现了吗</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s2.loli.net/2022/09/12/BFUaG57P3ObAf8j.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://s2.loli.net/2022/09/12/9M6DkRuXPoJ3zOw.jpg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a><a class="social-icon" href="https://github.com/ewddd" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2750193177@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">网站没建成多久,还有许多不足,也没有做什么优化,就先酱紫吧,等我以后技术有长进了再说!</div></div><div class="xpand" style="height:200px;"><canvas class="illo" width="800" height="800" style="max-width: 200px; max-height: 200px; touch-action: none; width: 640px; height: 640px;"></canvas></div><script src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/twopeople1.js"></script><script src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/zdog.dist.js"></script><script id="rendered-js" src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/twopeople.js"></script><style>.card-widget.card-announcement {
+margin: 0;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+canvas {
+display: block;
+margin: 0 auto;
+cursor: move;
+}</style><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85"><span class="toc-number">1.</span> <span class="toc-text">生产者</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">2.</span> <span class="toc-text">消费者</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e5b7246f.html" title="Kafka-python-api"><img data-lazy-src="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kafka-python-api"/></a><div class="content"><a class="title" href="/post/e5b7246f.html" title="Kafka-python-api">Kafka-python-api</a><time datetime="2022-09-30T07:44:28.000Z" title="发表于 2022-09-30 15:44:28">2022-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e8c1645.html" title="Kafka-python"><img data-lazy-src="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kafka-python"/></a><div class="content"><a class="title" href="/post/e8c1645.html" title="Kafka-python">Kafka-python</a><time datetime="2022-09-30T06:18:47.000Z" title="发表于 2022-09-30 14:18:47">2022-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9daba997.html" title="测试"><img data-lazy-src="http://p0.qhimg.com/bdr/__85/t016eb5915bd9b4618e.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="测试"/></a><div class="content"><a class="title" href="/post/9daba997.html" title="测试">测试</a><time datetime="2022-09-22T01:50:30.000Z" title="发表于 2022-09-22 09:50:30">2022-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7c613e7d.html" title="元类"><img data-lazy-src="https://bu.dusays.com/2022/05/26/628e6ab643d37.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="元类"/></a><div class="content"><a class="title" href="/post/7c613e7d.html" title="元类">元类</a><time datetime="2022-09-18T13:45:08.000Z" title="发表于 2022-09-18 21:45:08">2022-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/2178aef8.html" title="生成器"><img data-lazy-src="https://bu.dusays.com/2022/05/26/628fa0426213d.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生成器"/></a><div class="content"><a class="title" href="/post/2178aef8.html" title="生成器">生成器</a><time datetime="2022-09-18T12:49:46.000Z" title="发表于 2022-09-18 20:49:46">2022-09-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 By Ying ying</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"> <img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "> <img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="fa-solid fa-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="fa-solid fa-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div><div class="rightMenu-item" id="menu-home"><i class="fa-solid fa-house"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" href="/archives/"><i class="fa-solid fa-archive"></i><span>文章归档</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="fa-solid fa-folder-open"></i><span>文章分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="fa-solid fa-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuNormal"><a class="rightMenu-item menu-link" id="menu-radompage" href="/random/index.html"><i class="fa-solid fa-shoe-prints"></i><span>随便逛逛</span></a><div class="rightMenu-item" id="menu-translate"><i class="fa-solid fa-earth-asia"></i><span>繁简切换</span></div><div class="rightMenu-item" id="menu-darkmode"><i class="fa-solid fa-moon"></i><span>切换模式</span></div><div class="rightMenu-item" id="menu-print"><i class="fa-solid fa-print fa-fw"></i><span>打印页面</span></div></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/algolia.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.yinging.site',
+      region: 'ap-shanghai'
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.yinging.site',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.yinging.site',
+        region: 'ap-shanghai',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script defer src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/hexo-theme-volantis@latest/source/js/issues.min.js"></script><canvas id="universe"></canvas><script defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/universe.js"></script><script async src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/cursor.js"></script><script data-pjax defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/chocolate.js"></script><script defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/ethan_tzy.js"></script><div class="aplayer no-destroy" data-id="60198" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-lrctype="3" data-preload="none" data-autoplay="true"></div><script defer data-pjax src="/js/rightMenu.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="true" data-text="miss u,hi,Bonjour" data-fontsize="15px" data-random="true" async="async"></script><script>window.$crisp = [];
+window.CRISP_WEBSITE_ID = "b5058dfe-4b9e-4134-b381-6b19a7f76763";
+(function () {
+  d = document;
+  s = d.createElement("script");
+  s.src = "https://client.crisp.chat/l.js";
+  s.async = 1;
+  d.getElementsByTagName("head")[0].appendChild(s);
+})();
+$crisp.push(["safe", true])
+
+if (true) {
+  $crisp.push(["do", "chat:hide"])
+  $crisp.push(["on", "chat:closed", function() {
+    $crisp.push(["do", "chat:hide"])
+  }])
+  var chatBtnFn = () => {
+    var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+
+    });
+  }
+  chatBtnFn()
+} else {
+  if (false) {
+    function chatBtnHide () {
+      $crisp.push(["do", "chat:hide"])
+    }
+    function chatBtnShow () {
+      $crisp.push(["do", "chat:show"])
+    }
+  }
+}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax], .pjax-reload script').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="pjax-reload"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer="defer" src="https://fastly.jsdelivr.net/gh/graingert/wow@1.3.0/dist/wow.min.js"></script><script defer="defer" src="/js/wow_init.js"></script></div><!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/issues.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":20,"vOffset":-20},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kafka-python-api | 百变の小莹</title><meta name="keywords" content="Python,Kafka,消息队列"><meta name="author" content="Ying ying"><meta name="copyright" content="Ying ying"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="记一下之前一些学到的api吧,自己也要多看看官方文档,有时间也多看看英语吧! kafka官方 Kafka-python帮助文档   序列化与解码 编码（生产者）：value_serializer(key也是同样的写法) 解码（消费者）：value_deserializer(key也是同样的写法)   先看producer发送的json数据  123456from kafka import Kafk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka-python-api">
+<meta property="og:url" content="https://yinging.com/post/e5b7246f.html">
+<meta property="og:site_name" content="百变の小莹">
+<meta property="og:description" content="记一下之前一些学到的api吧,自己也要多看看官方文档,有时间也多看看英语吧! kafka官方 Kafka-python帮助文档   序列化与解码 编码（生产者）：value_serializer(key也是同样的写法) 解码（消费者）：value_deserializer(key也是同样的写法)   先看producer发送的json数据  123456from kafka import Kafk">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png">
+<meta property="article:published_time" content="2022-09-30T07:44:28.000Z">
+<meta property="article:modified_time" content="2022-09-30T09:13:42.894Z">
+<meta property="article:author" content="Ying ying">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png"><link rel="shortcut icon" href="https://s2.loli.net/2022/09/26/iqTRZU6hHV82WKz.png"><link rel="canonical" href="https://yinging.com/post/e5b7246f"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WHM432AVJS","apiKey":"b68033fcfc25be92d9d0242ca997feb9","indexName":"indices","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Ying ying","link":"链接: ","source":"来源: 百变の小莹","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2022-09-30 17:13:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/carousel-touch.min.js"></script><link rel="stylesheet" href="/css/rightMenu.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/l-lin/font-awesome-animation/dist/font-awesome-animation.min.css"  media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/css/ethan.css"><link rel="stylesheet" href="https://npm.elemecdn.com/tzy-blog/lib/css/loading_wizard.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://s2.loli.net/2022/09/15/ywi7QsVEY9FPaHM.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home faa-float animated"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-sun faa-float animated"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive faa-float animated"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags faa-float animated"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open faa-float animated"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-float animated"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music faa-float animated"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-camera-retro faa-float animated"></i><span> 相册</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fab fa-youtube faa-float animated"></i><span> 番剧</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video faa-float animated"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments faa-float animated"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link faa-float animated"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart card-announcement-animation faa-float animated"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bu.dusays.com/2022/05/02/626eb4e2df1df.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">百变の小莹</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home faa-float animated"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-sun faa-float animated"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive faa-float animated"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags faa-float animated"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open faa-float animated"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-float animated"></i><span> 娱乐</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music faa-float animated"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-camera-retro faa-float animated"></i><span> 相册</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fab fa-youtube faa-float animated"></i><span> 番剧</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video faa-float animated"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments faa-float animated"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link faa-float animated"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart card-announcement-animation faa-float animated"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Kafka-python-api</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-30T07:44:28.000Z" title="发表于 2022-09-30 15:44:28">2022-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-30T09:13:42.894Z" title="更新于 2022-09-30 17:13:42">2022-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/MQ/">MQ</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka-python-api"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>记一下之前一些学到的api吧,自己也要多看看官方文档,有时间也多看看英语吧!</p>
+<div class="note blue icon simple"><i class="note-icon fas fa-bullhorn"></i><p><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/">kafka官方</a></p>
+<p><a target="_blank" rel="noopener" href="https://kafka-python.readthedocs.io/en/master/apidoc/modules.html">Kafka-python帮助文档</a></p>
+</div>
+
+<h2 id="序列化与解码"><a href="#序列化与解码" class="headerlink" title="序列化与解码"></a>序列化与解码</h2><ul>
+<li>编码（生产者）：value_serializer(key也是同样的写法)</li>
+<li>解码（消费者）：value_deserializer(key也是同样的写法)</li>
+</ul>
+<ol>
+<li><p>先看producer发送的json数据 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&#x27;localhost:9092&#x27;</span>], value_serializer=<span class="keyword">lambda</span> m: json.dumps(m).encode(<span class="string">&#x27;ascii&#x27;</span>))</span><br><span class="line">future = producer.send(<span class="string">&#x27;my_topic&#x27;</span> ,  value= &#123;<span class="string">&#x27;value_1&#x27;</span> : <span class="string">&#x27;value_2&#x27;</span>&#125;, partition= <span class="number">0</span>)</span><br><span class="line">future.get(timeout= <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>consumer没有解码收到的数据 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConsumerRecord(topic=<span class="string">&#x27;my_topic&#x27;</span>, partition=<span class="number">0</span>, offset=<span class="number">22</span>, timestamp=<span class="number">1529575016310</span>, timestamp_type=<span class="number">0</span>, key=<span class="literal">None</span>, value=<span class="string">b&#x27;&#123;&quot;value_1&quot;: &quot;value_2&quot;&#125;&#x27;</span>, checksum=<span class="literal">None</span>, serialized_key_size=-<span class="number">1</span>, serialized_value_size=<span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+
+<p> 可以看到value为原始的json字节数据，接下来可以再做一步解码操作 </p>
+</li>
+<li><p>consumer自动解码 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">consumer = KafkaConsumer(group_id= <span class="string">&#x27;group2&#x27;</span>, bootstrap_servers= [<span class="string">&#x27;localhost:9092&#x27;</span>], value_deserializer=<span class="keyword">lambda</span> m: json.loads(m.decode(<span class="string">&#x27;ascii&#x27;</span>)))</span><br><span class="line">consumer.subscribe(topics= [<span class="string">&#x27;my_topic&#x27;</span>, <span class="string">&#x27;topic_1&#x27;</span>])</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> consumer:</span><br><span class="line">    <span class="built_in">print</span>(msg)</span><br></pre></td></tr></table></figure>
+
+<p> 接收结果： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConsumerRecord(topic=<span class="string">&#x27;my_topic&#x27;</span>, partition=<span class="number">0</span>, offset=<span class="number">23</span>, timestamp=<span class="number">1529575235994</span>, timestamp_type=<span class="number">0</span>, key=<span class="literal">None</span>, value=&#123;<span class="string">&#x27;value_1&#x27;</span>: <span class="string">&#x27;value_2&#x27;</span>&#125;, checksum=<span class="literal">None</span>, serialized_key_size=-<span class="number">1</span>, serialized_value_size=<span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以看到接收结果中，value已经自动解码，并为字符串类型</li>
+<li>不仅value可以json，key也可以，只需指定 key_deserializer</li>
+</ul>
+</li>
+</ol>
+<h2 id="发送字符串类型的key和value"><a href="#发送字符串类型的key和value" class="headerlink" title="发送字符串类型的key和value"></a>发送字符串类型的key和value</h2><div class="tabs" id="test1"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#test1-1">producer</button></li><li class="tab"><button type="button" data-href="#test1-2">consumer</button></li><li class="tab"><button type="button" data-href="#test1-3">可压缩消息</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="test1-1"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&#x27;localhost:9092&#x27;</span>],key_serializer= <span class="built_in">str</span>.encode, value_serializer= <span class="built_in">str</span>.encode)</span><br><span class="line">future = producer.send(<span class="string">&#x27;my_topic&#x27;</span> ,  key= <span class="string">&#x27;key_3&#x27;</span>, value= <span class="string">&#x27;value_3&#x27;</span>, partition= <span class="number">0</span>)</span><br><span class="line">future.get(timeout= <span class="number">10</span>)</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="test1-2"><p> 若想要消费者收到的为字符串类型，就需要解码操作，key_deserializer&#x3D; bytes.decode </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"></span><br><span class="line">consumer = KafkaConsumer(group_id= <span class="string">&#x27;group2&#x27;</span>, bootstrap_servers= [<span class="string">&#x27;localhost:9092&#x27;</span>], key_deserializer= <span class="built_in">bytes</span>.decode, value_deserializer= <span class="built_in">bytes</span>.decode)</span><br><span class="line">consumer.subscribe(pattern= <span class="string">&#x27;^my.*&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> consumer:</span><br><span class="line">    <span class="built_in">print</span>(msg)</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="test1-3"><ul>
+<li>若消息过大，还可压缩消息发送，可选值为 ‘gzip’, ‘snappy’, ‘lz4’, or None </li>
+<li>compression_type&#x3D;’gzip’</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&#x27;localhost:9092&#x27;</span>], compression_type=<span class="string">&#x27;gzip&#x27;</span>)</span><br><span class="line">future = producer.send(<span class="string">&#x27;my_topic&#x27;</span> ,  key= <span class="string">b&#x27;key_3&#x27;</span>, value= <span class="string">b&#x27;value_3&#x27;</span>, partition= <span class="number">0</span>)</span><br><span class="line">future.get(timeout= <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>msgpack为MessagePack的简称，是高效二进制序列化类库，比json高效 </li>
+<li>发送msgpack消息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">producer = KafkaProducer(value_serializer=msgpack.dumps)</span><br><span class="line">producer.send(<span class="string">&#x27;msgpack-topic&#x27;</span>, &#123;<span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;value&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+
+<h2 id="send方法"><a href="#send方法" class="headerlink" title="send方法"></a>send方法</h2><p>对于生产者着重于send方法，其余的方法多看文档，在官方文档中有许多可配置参数可以查看， </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#send用于向主题发送信息</span></span><br><span class="line">send(topic, value=<span class="literal">None</span>, key=<span class="literal">None</span>, headers=<span class="literal">None</span>, partition=<span class="literal">None</span>, timestamp_ms=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">topic (<span class="built_in">str</span>) – topic where the message will be published，指定向哪个主题发送消息。</span><br><span class="line">value (optional) – message value. Must be <span class="built_in">type</span> <span class="built_in">bytes</span>, <span class="keyword">or</span> be serializable to <span class="built_in">bytes</span> via configured value_serializer. If value <span class="keyword">is</span> <span class="literal">None</span>, key <span class="keyword">is</span> required <span class="keyword">and</span> message acts <span class="keyword">as</span> a ‘delete’. </span><br><span class="line">               <span class="comment">#value为要发送的消息值，必须为bytes类型，如果这个值为空，则必须有对应的key值，并且空值被标记为删除。可以通过配置value_serializer参数序列化为字节类型。</span></span><br><span class="line">key (optional) – a key to associate <span class="keyword">with</span> the message. Can be used to determine which partition to send the message to. If partition <span class="keyword">is</span> <span class="literal">None</span> (<span class="keyword">and</span> producer’s partitioner config <span class="keyword">is</span> left <span class="keyword">as</span> default), </span><br><span class="line">               then messages <span class="keyword">with</span> the same key will be delivered to the same partition (but <span class="keyword">if</span> key <span class="keyword">is</span> <span class="literal">None</span>, partition <span class="keyword">is</span> chosen randomly). Must be </span><br><span class="line">                <span class="built_in">type</span> <span class="built_in">bytes</span>, <span class="keyword">or</span> be serializable to <span class="built_in">bytes</span> via configured key_serializer.</span><br><span class="line">　　　　　　　　 <span class="comment">#key与value对应的键值，必须为bytes类型。kafka根据key值确定消息发往哪个分区（如果分区被指定则发往指定的分区），具有相同key的消息被发往同一个分区，如果key</span></span><br><span class="line">               <span class="comment">#为NONE则随机选择分区，可以使用key_serializer参数序列化为字节类型。</span></span><br><span class="line">headers (optional) – a <span class="built_in">list</span> of header key value pairs. <span class="type">List</span> items are tuples of <span class="built_in">str</span> key <span class="keyword">and</span> <span class="built_in">bytes</span> value.</span><br><span class="line">               <span class="comment">#键值对的列表头部，列表项是str(key)和bytes(value)。</span></span><br><span class="line">timestamp_ms (<span class="built_in">int</span>, optional) – epoch milliseconds (<span class="keyword">from</span> Jan <span class="number">1</span> <span class="number">1970</span> UTC) to use <span class="keyword">as</span> the message timestamp. Defaults to current time.</span><br><span class="line">               <span class="comment">#时间戳</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 消息发送成功，返回的是RecordMetadata的对象；否则的话引发KafkaTimeoutError异常</span></span><br></pre></td></tr></table></figure>
+
+<p> 在进行实际测试前，先创建一个topics，利用控制台创建：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@test3 <span class="built_in">bin</span>]<span class="comment"># ./kafka-topics.sh --zookeeper=10.0.102.204:2181,10.0.102.214:2181 --create --topic kafkatest --replication-factor 3 --partitions 3</span></span><br><span class="line">Created topic <span class="string">&quot;kafkatest&quot;</span>.</span><br><span class="line">[root@test3 <span class="built_in">bin</span>]<span class="comment"># ./kafka-topics.sh --zookeeper=10.0.102.204:2181,10.0.102.214:2181 --list --topic kafkatest</span></span><br><span class="line">kafkatest</span><br><span class="line">[root@test3 <span class="built_in">bin</span>]<span class="comment"># ./kafka-topics.sh --zookeeper=10.0.102.204:2181,10.0.102.214:2181 --describe --topic kafkatest</span></span><br><span class="line">Topic:kafkatest    PartitionCount:<span class="number">3</span>    ReplicationFactor:<span class="number">3</span>    Configs:</span><br><span class="line">    Topic: kafkatest    Partition: <span class="number">0</span>    Leader: <span class="number">2</span>    Replicas: <span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>    Isr: <span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span></span><br><span class="line">    Topic: kafkatest    Partition: <span class="number">1</span>    Leader: <span class="number">3</span>    Replicas: <span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>    Isr: <span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span></span><br><span class="line">    Topic: kafkatest    Partition: <span class="number">2</span>    Leader: <span class="number">1</span>    Replicas: <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>    Isr: <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">[root@test3 <span class="built_in">bin</span>]<span class="comment">#  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#主题有3个分区，3个复制系数，主题名为kafkatest.  </span></span><br></pre></td></tr></table></figure>
+
+<p> 一个简易的生产者demo如下： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaProducer</span><br><span class="line"></span><br><span class="line">producer = KafkaProducer(bootstrap_servers=[<span class="string">&quot;10.0.102.214:9092&quot;</span>])</span><br><span class="line"></span><br><span class="line">i = <span class="number">20</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    msg = <span class="string">&quot;producer1+%d&quot;</span> % i</span><br><span class="line">    <span class="built_in">print</span>(msg)</span><br><span class="line">    future = producer.send(<span class="string">&#x27;kafkatest&#x27;</span>, key=<span class="built_in">bytes</span>(<span class="built_in">str</span>(i), value=msg.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    <span class="comment">#result = future.get(timeout= 10)</span></span><br><span class="line">	<span class="comment"># print(result)                      </span></span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">producer.close()</span><br><span class="line"></span><br><span class="line"><span class="comment">#就是一个简易的while循环，不停的向kafka发送消息，一定要注意send发送的key和value的值均为bytes类型。</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>future.get函数等待单条消息发送完成或超时，经测试，必须有这个函数，不然发送不出去，或用time.sleep代替</li>
+</ul>
+<p>一个消费者的demo接收上面生产者发送的数据。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"></span><br><span class="line">consumer = KafkaConsumer(<span class="string">&quot;kafkatest&quot;</span>, bootstrap_servers=[<span class="string">&quot;10.0.102.204:9092&quot;</span>], auto_offset_reset=<span class="string">&#x27;latest&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> consumer:</span><br><span class="line">    key = msg.key.decode(encoding=<span class="string">&quot;utf-8&quot;</span>)               <span class="comment">#因为接收到的数据时bytes类型，因此需要解码</span></span><br><span class="line">    value = msg.value.decode(encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%s-%d-%d key=%s value=%s&quot;</span> % (msg.topic, msg.partition, msg.offset, key, value))</span><br><span class="line"></span><br><span class="line"><span class="comment">#这是一个阻塞的过程，当生产者有消息传来的时候，就会读取消息，若是没有消息就会阻塞等待</span></span><br><span class="line"><span class="comment">#auto_offset_reset参数表示重置偏移量，有两个取值，latest表示读取消息队列中最新的消息，另一个取值earliest表示读取最早的消息。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="消费者群组"><a href="#消费者群组" class="headerlink" title="消费者群组"></a>消费者群组</h2><p>​	一个群组里的消费者订阅的是同一个主题，每个消费者接收主题一部分分区的消息。创建一个消费者群组如下：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">#消费者群组中有一个group_id参数，</span></span><br><span class="line">consumer = KafkaConsumer(<span class="string">&quot;kafkatest&quot;</span>, group_id=<span class="string">&quot;test1&quot;</span>, bootstrap_servers=[<span class="string">&quot;10.0.102.204:9092&quot;</span>], auto_offset_reset=<span class="string">&#x27;latest&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> consumer:</span><br><span class="line">    key = msg.key.decode(encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    value = msg.value.decode(encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%s-%d-%d key=%s value=%s&quot;</span> % (msg.topic, msg.partition, msg.offset, key, value))</span><br></pre></td></tr></table></figure>
+
+<p> 在pycharm中把上面的代码复制一份，这样在一个test1群组中就有了两个消费者，同时执行。 </p>
+<h2 id="poll-方法"><a href="#poll-方法" class="headerlink" title="poll()方法"></a>poll()方法</h2><p>从指定的主题&#x2F;分区中获取数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">poll(timeout_ms=<span class="number">0</span>, max_records=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># Records are fetched and returned in batches by topic-partition. On each poll, consumer will try to use the last consumed offset as the starting offset and fetch sequentially. The last consumed offset can be manually set through seek() or automatically set as the last committed offset for the subscribed list of partitions.</span></span><br><span class="line"><span class="comment"># 通过主题-分区分批获取和返回记录，在每一个轮询中，消费者将会使用最后消费的偏移量作为开始然后顺序fetch数据。最后消费的偏移量可以使用seek()手动设置，或者自动设置为订阅</span></span><br><span class="line"><span class="comment"># 的分区列表的最后提交的偏移量。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Incompatible with iterator interface – use one or the other, not both.</span></span><br><span class="line"><span class="comment"># 与迭代器的接口是对立的。</span></span><br><span class="line">timeout_ms (<span class="built_in">int</span>, optional) – Milliseconds spent waiting <span class="keyword">in</span> poll <span class="keyword">if</span> data <span class="keyword">is</span> <span class="keyword">not</span> available <span class="keyword">in</span> the buffer. If <span class="number">0</span>, returns immediately <span class="keyword">with</span> <span class="built_in">any</span> </span><br><span class="line">　　　　　　　　　　　　　　　　records that are available currently <span class="keyword">in</span> the buffer, <span class="keyword">else</span> returns empty. Must <span class="keyword">not</span> be negative. Default: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">max_records (<span class="built_in">int</span>, optional) – The maximum number of records returned <span class="keyword">in</span> a single call to poll(). Default: Inherit value <span class="keyword">from</span> max_poll_records. </span><br><span class="line">                            默认从max_poll_records继承值。</span><br></pre></td></tr></table></figure>
+
+<p> 一个简答的实例从kafka拉取数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">consumer = KafkaConsumer(<span class="string">&quot;kafkatest&quot;</span>, bootstrap_servers=[<span class="string">&#x27;10.0.102.204:9092&#x27;</span>])</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    msg = consumer.poll(timeout_ms=<span class="number">5</span>)      </span><br><span class="line">    <span class="built_in">print</span>(msg)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#执行结果如下，返回的是一个字典，consumerRecord对象包含着消息的一些元数据信息</span></span><br><span class="line">&#123;TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>, offset=<span class="number">21929</span>, timestamp=<span class="number">1545978879892</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;138&#x27;</span>, value=<span class="string">b&#x27;producer1+138&#x27;</span>, checksum=-<span class="number">660348132</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)]&#125;</span><br><span class="line">&#123;TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">0</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">0</span>, offset=<span class="number">22064</span>, timestamp=<span class="number">1545978882893</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;141&#x27;</span>, value=<span class="string">b&#x27;producer1+141&#x27;</span>, checksum=-<span class="number">1803506349</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)], TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>, offset=<span class="number">21930</span>, timestamp=<span class="number">1545978880892</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;139&#x27;</span>, value=<span class="string">b&#x27;producer1+139&#x27;</span>, checksum=-<span class="number">1863433503</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>), ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>, offset=<span class="number">21931</span>, timestamp=<span class="number">1545978881893</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;140&#x27;</span>, value=<span class="string">b&#x27;producer1+140&#x27;</span>, checksum=-<span class="number">280146643</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)]&#125;</span><br><span class="line">&#123;TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">2</span>, offset=<span class="number">21932</span>, timestamp=<span class="number">1545978884894</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;143&#x27;</span>, value=<span class="string">b&#x27;producer1+143&#x27;</span>, checksum=<span class="number">1459018748</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)]&#125;</span><br><span class="line">&#123;TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">1</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">1</span>, offset=<span class="number">22046</span>, timestamp=<span class="number">1545978883894</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;142&#x27;</span>, value=<span class="string">b&#x27;producer1+142&#x27;</span>, checksum=-<span class="number">2023137030</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)], TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">0</span>): [ConsumerRecord(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">0</span>, offset=<span class="number">22065</span>, timestamp=<span class="number">1545978885894</span>, timestamp_type=<span class="number">0</span>, key=<span class="string">b&#x27;144&#x27;</span>, value=<span class="string">b&#x27;producer1+144&#x27;</span>, checksum=<span class="number">1999922748</span>, serialized_key_size=<span class="number">3</span>, serialized_value_size=<span class="number">13</span>)]&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="seek-方法"><a href="#seek-方法" class="headerlink" title="seek()方法"></a>seek()方法</h2><p>  手动指定拉取主题的偏移量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">seek(partition, offset)    </span><br><span class="line">    </span><br><span class="line">Manually specify the fetch offset <span class="keyword">for</span> a TopicPartition.</span><br><span class="line"></span><br><span class="line">Overrides the fetch offsets that the consumer will use on the <span class="built_in">next</span> poll(). If this API <span class="keyword">is</span> invoked <span class="keyword">for</span> the same partition more than once, </span><br><span class="line">the latest offset will be used on the <span class="built_in">next</span> poll().</span><br><span class="line"><span class="comment">#覆盖下一个消费者使用poll()拉取的偏移量。如果这个API对同一个分区执行了多次，那么最后一个次的结果将会被使用。</span></span><br><span class="line"></span><br><span class="line">Note: You may lose data <span class="keyword">if</span> this API <span class="keyword">is</span> arbitrarily used <span class="keyword">in</span> the middle of consumption to reset the fetch offsets.    </span><br><span class="line"><span class="comment">#如果在消费过程中任意使用此API以重置提取偏移，则可能会丢失数据。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#实例如下</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.position(TopicPartition(topic=<span class="string">&quot;kafkatest&quot;</span>,partition=<span class="number">1</span>))</span><br><span class="line"><span class="number">22103</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#使用seek()设置偏移量</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.seek(partition=TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>),offset=<span class="number">22222</span>)</span><br><span class="line"><span class="comment">#需要说明的是seek函数有一个partition参数，但是这个参数必须是TopicPartition类型的。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.position(TopicPartition(topic=<span class="string">&quot;kafkatest&quot;</span>,partition=<span class="number">1</span>))</span><br><span class="line"><span class="number">22222</span></span><br></pre></td></tr></table></figure>
+
+<p> 与seek相关的还有两个方法： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">seek_to_beginning(*partitions)</span><br><span class="line"><span class="comment">#寻找分区最早可用的偏移量</span></span><br><span class="line">seek_to_end(*partitions)</span><br><span class="line"><span class="comment">#寻找分区最近可用的偏移量</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.seek_to_beginning(TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.seek_to_end(TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#注意这两个方法的参数都是TopicPartition类型。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="subscribe-方法"><a href="#subscribe-方法" class="headerlink" title="subscribe()方法"></a>subscribe()方法</h2><p>  subscribe()方法，给当前消费者订阅主题。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Subscribe to a <span class="built_in">list</span> of topics, <span class="keyword">or</span> a topic regex pattern.</span><br><span class="line"><span class="comment">#订阅一个主体列表，或者主题的正则表达式</span></span><br><span class="line">Partitions will be dynamically assigned via a group coordinator. Topic subscriptions are <span class="keyword">not</span> incremental: this <span class="built_in">list</span> will replace the current assignment (<span class="keyword">if</span> there <span class="keyword">is</span> one).</span><br><span class="line"><span class="comment">#分区将会通过分区协调器自动分配。主题订阅不是增量的，这个列表将会替换已经存在的主题。</span></span><br><span class="line"></span><br><span class="line">This method <span class="keyword">is</span> incompatible <span class="keyword">with</span> assign().    </span><br><span class="line"><span class="comment">#这个方法与assign()方法是不兼容的。    </span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.subscription()                       <span class="comment">#当前消费者订阅的主题</span></span><br><span class="line">&#123;<span class="string">&#x27;lianxi&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.subscribe((<span class="string">&quot;kafkatest&quot;</span>,<span class="string">&quot;lianxi&quot;</span>))    <span class="comment">#订阅主题，会覆盖之前的主题</span></span><br><span class="line"><span class="comment"># 也可以使用正则</span></span><br><span class="line"><span class="comment">#consumer.subscribe(pattern= &#x27;^my.*&#x27;)</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.subscription()                       <span class="comment">#可以看到已经覆盖</span></span><br><span class="line">&#123;<span class="string">&#x27;lianxi&#x27;</span>, <span class="string">&#x27;kafkatest&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="unsubscribe（）方法"><a href="#unsubscribe（）方法" class="headerlink" title="unsubscribe（）方法"></a>unsubscribe（）方法</h2><p>​	unsubscribe（） ：取消订阅所有主题并清除所有已分配的分区。 </p>
+<h2 id="assign-partitions-方法"><a href="#assign-partitions-方法" class="headerlink" title="assign(partitions)方法"></a>assign(partitions)方法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Manually assign a <span class="built_in">list</span> of TopicPartitions to this consumer.</span><br><span class="line"><span class="comment">#手动将TopicPartitions指定给此消费者。</span></span><br><span class="line"><span class="comment">#这个函数和subscribe函数不能同时使用</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.assign(TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>手动分配partition</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="keyword">from</span> kafka <span class="keyword">import</span> TopicPartition</span><br><span class="line"></span><br><span class="line">consumer = KafkaConsumer(group_id= <span class="string">&#x27;group2&#x27;</span>, bootstrap_servers= [<span class="string">&#x27;localhost:9092&#x27;</span>])</span><br><span class="line">consumer.assign([TopicPartition(topic= <span class="string">&#x27;my_topic&#x27;</span>, partition= <span class="number">0</span>)])</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> consumer:</span><br><span class="line">    <span class="built_in">print</span>(msg)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="assignment-方法"><a href="#assignment-方法" class="headerlink" title="assignment()方法"></a>assignment()方法</h2><ul>
+<li><p>Get the TopicPartitions currently assigned to this consumer.</p>
+</li>
+<li><p>如果分区是使用assign()直接分配的，那么这将只返回先前分配的相同分区。如果使用subscribe()订阅了主题，那么这将给出当前分配给使用者的主题分区集（如果分配尚未发生，或者分区正在重新分配的过程中，则可能是None）</p>
+</li>
+</ul>
+<h2 id="beginning-offsets-partitions"><a href="#beginning-offsets-partitions" class="headerlink" title="beginning_offsets(partitions)"></a>beginning_offsets(partitions)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Get the first offset <span class="keyword">for</span> the given partitions.     </span><br><span class="line"><span class="comment">#得到给定分区的第一个偏移量</span></span><br><span class="line"></span><br><span class="line">This method does <span class="keyword">not</span> change the current consumer position of the partitions.</span><br><span class="line"><span class="comment">#这个方法不会改变当前消费者的偏移量</span></span><br><span class="line">This method may block indefinitely <span class="keyword">if</span> the partition does <span class="keyword">not</span> exist. </span><br><span class="line"><span class="comment">#这个方法可能会阻塞，如果给定的分区没有出现。</span></span><br><span class="line"></span><br><span class="line">partitions参数仍然是TopicPartition类型。</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.beginning_offsets(TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>))</span><br><span class="line"><span class="comment">#这个方法在kafka-python-1.3.1中没有</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="close-autocommit-x3D-True"><a href="#close-autocommit-x3D-True" class="headerlink" title="close(autocommit&#x3D;True)"></a>close(autocommit&#x3D;True)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Close the consumer, waiting indefinitely <span class="keyword">for</span> <span class="built_in">any</span> needed cleanup. </span><br><span class="line"><span class="comment">#关闭消费者，阻塞等待所需要的清理。</span></span><br><span class="line"></span><br><span class="line">Keyword Arguments:</span><br><span class="line">     autocommit (<span class="built_in">bool</span>) – If auto-commit <span class="keyword">is</span> configured <span class="keyword">for</span> this consumer, this optional flag causes the consumer to attempt to commit <span class="built_in">any</span> </span><br><span class="line"> pending consumed offsets prior to close. Default: <span class="literal">True</span></span><br><span class="line">      <span class="comment">#如果为此使用者配置了自动提交，则此可选标志会导致使用者在关闭之前尝试提交任何待处理的消耗偏移量。默认值：True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="commit-offsets-x3D-None"><a href="#commit-offsets-x3D-None" class="headerlink" title="commit(offsets&#x3D;None)"></a>commit(offsets&#x3D;None)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Commit offsets to kafka, blocking until success <span class="keyword">or</span> error.</span><br><span class="line"><span class="comment">#提交偏移量到kafka，阻塞直到成功或者出错</span></span><br><span class="line">这只向Kafka提交偏移量。使用此API提交的偏移量将在每次重新平衡之后的第一次取出时以及在启动时使用。因此，如果需要在Kafka以外的任何地方存储偏移，则不应该使用此API。</span><br><span class="line">为了避免在重新启动使用者时重新处理读取的最后一条消息，提交的偏移量应该是应用程序应该使用的下一条消息，即：last_offset+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">Parameters:    </span><br><span class="line">    offsets (<span class="built_in">dict</span>, optional) – &#123;TopicPartition: OffsetAndMetadata&#125; <span class="built_in">dict</span> to commit <span class="keyword">with</span> the configured group_id. Defaults to </span><br><span class="line"> currently consumed offsets <span class="keyword">for</span> <span class="built_in">all</span> subscribed partitions.</span><br></pre></td></tr></table></figure>
+
+<h2 id="commit-async-offsets-x3D-None-callback-x3D-None"><a href="#commit-async-offsets-x3D-None-callback-x3D-None" class="headerlink" title="commit_async(offsets&#x3D;None, callback&#x3D;None)"></a>commit_async(offsets&#x3D;None, callback&#x3D;None)</h2><ul>
+<li>Commit offsets to kafka asynchronously, optionally firing callback.异步提交，可选择的触发回调，其余的和上面的commit一样。</li>
+</ul>
+<h2 id="committed-partition"><a href="#committed-partition" class="headerlink" title="committed(partition)"></a>committed(partition)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Get the last committed offset <span class="keyword">for</span> the given partition.</span><br><span class="line"></span><br><span class="line">This offset will be used <span class="keyword">as</span> the position <span class="keyword">for</span> the consumer <span class="keyword">in</span> the event of a failure.</span><br><span class="line"></span><br><span class="line">如果有问题的分区未分配给此使用者，或者使用者尚未初始化其已提交偏移量缓存，则此调用可能会阻止执行远程调用。</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.committed(TopicPartition(<span class="string">&quot;kafkatest&quot;</span>,<span class="number">1</span>))</span><br><span class="line"><span class="number">22103</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="pase-pased和resume"><a href="#pase-pased和resume" class="headerlink" title="pase,pased和resume"></a>pase,pased和resume</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pase：暂停当前正在进行的请求。需要使用resume恢复</span><br><span class="line">pased：获取使用pase暂停时的分区信息</span><br><span class="line">resume： 从pase状态恢复。</span><br><span class="line">除了pased之外，其余两个方法的参数均为TopicPartation类型</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> kafka <span class="keyword">import</span> KafkaConsumer</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer = KafkaConsumer(<span class="string">&quot;kafkatest&quot;</span>, group_id=<span class="string">&quot;test1&quot;</span>, bootstrap_servers=[<span class="string">&quot;10.0.102.204:9092&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.topics()            <span class="comment">#获取主主题列表，返回的是一个set集合</span></span><br><span class="line">&#123;<span class="string">&#x27;kafkatest&#x27;</span>, <span class="string">&#x27;lianxi&#x27;</span>, <span class="string">&#x27;science&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.partitions_for_topic(<span class="string">&quot;kafkatest&quot;</span>)     <span class="comment">#获取主题的分区信息</span></span><br><span class="line">&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.subscription()      <span class="comment">#获取当前消费者订阅的主题</span></span><br><span class="line">&#123;<span class="string">&#x27;kafkatest&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.position((<span class="number">0</span>,))      <span class="comment">#得到下一个记录的偏移量</span></span><br><span class="line"></span><br><span class="line">TypeError: partition must be a TopicPartition namedtuple</span><br><span class="line"></span><br><span class="line"><span class="comment">#需要注意的是position方法需要传入的是一个kafka-python自带的一种数据结构TopicPartition，这种数据结构的定义如下，在使用的时候需要导入</span></span><br><span class="line">TopicPartition = namedtuple(<span class="string">&quot;TopicPartition&quot;</span>, [<span class="string">&quot;topic&quot;</span>, <span class="string">&quot;partition&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>consumer.position(TopicPartition(topic=<span class="string">&#x27;kafkatest&#x27;</span>, partition=<span class="number">1</span>))</span><br><span class="line"><span class="number">17580</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ying ying</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://yinging.com/post/e5b7246f.html">https://yinging.com/post/e5b7246f.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yinging.com" target="_blank">百变の小莹</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Kafka/">Kafka</a><a class="post-meta__tags" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s2.loli.net/2022/09/12/chBkNDo4miMX6jz.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://s2.loli.net/2022/09/12/chBkNDo4miMX6jz.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s2.loli.net/2022/09/12/Efo639O5XwUMcvG.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://s2.loli.net/2022/09/12/Efo639O5XwUMcvG.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/e8c1645.html"><img class="prev-cover" data-lazy-src="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Kafka-python</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/e8c1645.html" title="Kafka-python"><img class="cover" data-lazy-src="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-30</div><div class="title">Kafka-python</div></div></a></div><div><a href="/post/7c613e7d.html" title="元类"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/05/26/628e6ab643d37.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">元类</div></div></a></div><div><a href="/post/9daba997.html" title="测试"><img class="cover" data-lazy-src="http://p0.qhimg.com/bdr/__85/t016eb5915bd9b4618e.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-22</div><div class="title">测试</div></div></a></div><div><a href="/post/4e9b1069.html" title="可变与不可变类型"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/06/05/629c65942cd1c.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">可变与不可变类型</div></div></a></div><div><a href="/post/2178aef8.html" title="生成器"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/05/26/628fa0426213d.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">生成器</div></div></a></div><div><a href="/post/da520e93.html" title="装饰器"><img class="cover" data-lazy-src="https://bu.dusays.com/2022/07/24/62dd5bd9199a7.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">装饰器</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://s2.loli.net/2022/09/15/ywi7QsVEY9FPaHM.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ying ying</div><div class="author-info__description">2022年的理想你实现了吗</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s2.loli.net/2022/09/12/BFUaG57P3ObAf8j.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://s2.loli.net/2022/09/12/9M6DkRuXPoJ3zOw.jpg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a><a class="social-icon" href="https://github.com/ewddd" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2750193177@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">网站没建成多久,还有许多不足,也没有做什么优化,就先酱紫吧,等我以后技术有长进了再说!</div></div><div class="xpand" style="height:200px;"><canvas class="illo" width="800" height="800" style="max-width: 200px; max-height: 200px; touch-action: none; width: 640px; height: 640px;"></canvas></div><script src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/twopeople1.js"></script><script src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/zdog.dist.js"></script><script id="rendered-js" src="https://fastly.jsdelivr.net/gh/xiaopengand/blogCdn@latest/xzxr/twopeople.js"></script><style>.card-widget.card-announcement {
+margin: 0;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+canvas {
+display: block;
+margin: 0 auto;
+cursor: move;
+}</style><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">序列化与解码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B%E7%9A%84key%E5%92%8Cvalue"><span class="toc-number">2.</span> <span class="toc-text">发送字符串类型的key和value</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#send%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">send方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BE%A4%E7%BB%84"><span class="toc-number">4.</span> <span class="toc-text">消费者群组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poll-%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">poll()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#seek-%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">seek()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#subscribe-%E6%96%B9%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">subscribe()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unsubscribe%EF%BC%88%EF%BC%89%E6%96%B9%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">unsubscribe（）方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assign-partitions-%E6%96%B9%E6%B3%95"><span class="toc-number">9.</span> <span class="toc-text">assign(partitions)方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assignment-%E6%96%B9%E6%B3%95"><span class="toc-number">10.</span> <span class="toc-text">assignment()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#beginning-offsets-partitions"><span class="toc-number">11.</span> <span class="toc-text">beginning_offsets(partitions)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#close-autocommit-x3D-True"><span class="toc-number">12.</span> <span class="toc-text">close(autocommit&#x3D;True)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit-offsets-x3D-None"><span class="toc-number">13.</span> <span class="toc-text">commit(offsets&#x3D;None)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit-async-offsets-x3D-None-callback-x3D-None"><span class="toc-number">14.</span> <span class="toc-text">commit_async(offsets&#x3D;None, callback&#x3D;None)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#committed-partition"><span class="toc-number">15.</span> <span class="toc-text">committed(partition)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pase-pased%E5%92%8Cresume"><span class="toc-number">16.</span> <span class="toc-text">pase,pased和resume</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">17.</span> <span class="toc-text">其他</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e5b7246f.html" title="Kafka-python-api"><img data-lazy-src="https://bu.dusays.com/2022/05/02/626eb4e2df1df.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kafka-python-api"/></a><div class="content"><a class="title" href="/post/e5b7246f.html" title="Kafka-python-api">Kafka-python-api</a><time datetime="2022-09-30T07:44:28.000Z" title="发表于 2022-09-30 15:44:28">2022-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e8c1645.html" title="Kafka-python"><img data-lazy-src="http://p7.qhimg.com/bdr/__85/t0117c9eab9643cb5ca.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kafka-python"/></a><div class="content"><a class="title" href="/post/e8c1645.html" title="Kafka-python">Kafka-python</a><time datetime="2022-09-30T06:18:47.000Z" title="发表于 2022-09-30 14:18:47">2022-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9daba997.html" title="测试"><img data-lazy-src="http://p0.qhimg.com/bdr/__85/t016eb5915bd9b4618e.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="测试"/></a><div class="content"><a class="title" href="/post/9daba997.html" title="测试">测试</a><time datetime="2022-09-22T01:50:30.000Z" title="发表于 2022-09-22 09:50:30">2022-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7c613e7d.html" title="元类"><img data-lazy-src="https://bu.dusays.com/2022/05/26/628e6ab643d37.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="元类"/></a><div class="content"><a class="title" href="/post/7c613e7d.html" title="元类">元类</a><time datetime="2022-09-18T13:45:08.000Z" title="发表于 2022-09-18 21:45:08">2022-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/2178aef8.html" title="生成器"><img data-lazy-src="https://bu.dusays.com/2022/05/26/628fa0426213d.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生成器"/></a><div class="content"><a class="title" href="/post/2178aef8.html" title="生成器">生成器</a><time datetime="2022-09-18T12:49:46.000Z" title="发表于 2022-09-18 20:49:46">2022-09-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://bu.dusays.com/2022/05/02/626eb4e2df1df.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 By Ying ying</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"> <img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "> <img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="fa-solid fa-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="fa-solid fa-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div><div class="rightMenu-item" id="menu-home"><i class="fa-solid fa-house"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" href="/archives/"><i class="fa-solid fa-archive"></i><span>文章归档</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="fa-solid fa-folder-open"></i><span>文章分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="fa-solid fa-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuNormal"><a class="rightMenu-item menu-link" id="menu-radompage" href="/random/index.html"><i class="fa-solid fa-shoe-prints"></i><span>随便逛逛</span></a><div class="rightMenu-item" id="menu-translate"><i class="fa-solid fa-earth-asia"></i><span>繁简切换</span></div><div class="rightMenu-item" id="menu-darkmode"><i class="fa-solid fa-moon"></i><span>切换模式</span></div><div class="rightMenu-item" id="menu-print"><i class="fa-solid fa-print fa-fw"></i><span>打印页面</span></div></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/algolia.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.yinging.site',
+      region: 'ap-shanghai'
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.yinging.site',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.yinging.site',
+        region: 'ap-shanghai',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script defer src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/hexo-theme-volantis@latest/source/js/issues.min.js"></script><canvas id="universe"></canvas><script defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/universe.js"></script><script async src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/cursor.js"></script><script data-pjax defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/chocolate.js"></script><script defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/ethan_tzy.js"></script><div class="aplayer no-destroy" data-id="60198" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-lrctype="3" data-preload="none" data-autoplay="true"></div><script defer data-pjax src="/js/rightMenu.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="true" data-text="miss u,hi,Bonjour" data-fontsize="15px" data-random="true" async="async"></script><script>window.$crisp = [];
+window.CRISP_WEBSITE_ID = "b5058dfe-4b9e-4134-b381-6b19a7f76763";
+(function () {
+  d = document;
+  s = d.createElement("script");
+  s.src = "https://client.crisp.chat/l.js";
+  s.async = 1;
+  d.getElementsByTagName("head")[0].appendChild(s);
+})();
+$crisp.push(["safe", true])
+
+if (true) {
+  $crisp.push(["do", "chat:hide"])
+  $crisp.push(["on", "chat:closed", function() {
+    $crisp.push(["do", "chat:hide"])
+  }])
+  var chatBtnFn = () => {
+    var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+
+    });
+  }
+  chatBtnFn()
+} else {
+  if (false) {
+    function chatBtnHide () {
+      $crisp.push(["do", "chat:hide"])
+    }
+    function chatBtnShow () {
+      $crisp.push(["do", "chat:show"])
+    }
+  }
+}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax], .pjax-reload script').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="pjax-reload"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer="defer" src="https://fastly.jsdelivr.net/gh/graingert/wow@1.3.0/dist/wow.min.js"></script><script defer="defer" src="/js/wow_init.js"></script></div><!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://unpkg.zhimg.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/issues.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":20,"vOffset":-20},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
