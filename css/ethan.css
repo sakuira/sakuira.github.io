@@ -741,6 +741,11 @@ body,
     font-size: 1.4em;
 }
 
+/* 公告栏左对齐 */
+.card-widget .card-announcement {
+    text-align: left  !important;
+}
+
 .site-page .fa-heart {
     color: #fc0505 !important
 }
